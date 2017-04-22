@@ -24,7 +24,6 @@ def url(request):
 	LANGUAGE = "english"
 	SENTENCES_COUNT = 5
 	out=[]
-	url = "http://www.bbc.com/news/world-us-canada-38663043"
 	parser = HtmlParser.from_url(url, Tokenizer(LANGUAGE))
 	stemmer = Stemmer(LANGUAGE)
 	summarizer = Summarizer(stemmer)
