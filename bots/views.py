@@ -22,7 +22,7 @@ from bs4 import BeautifulSoup
 import os
 
 def url(request):
-	if(request.GET.get('url','url') != 'url'):
+	if(request.GET.get('url','url').lower() not in  ['url','image']):
 		url = request.GET.get('url','url')
 		print(url)
 		LANGUAGE = "english"
@@ -34,11 +34,9 @@ def url(request):
 		summarizer.stop_words = get_stop_words(LANGUAGE)
 		for sentence in summarizer(parser.document, SENTENCES_COUNT):
 		    out.append(str(sentence))
-		return JsonResponse({'content' : str("\n".join(out)) })
-	elif(request.GET.get('image','image')):
-		r = requests.get(request.GET.get('image'))
-		test = request.GET.get('image').split("/")
-		urlval = str(''.join(test[:3]))
+		r = requests.get(url)
+		test = url.split("/")
+		urlval = str('/'.join(test[:3]))
 		data = r.text
 		soup = BeautifulSoup(data, "lxml")
 		temp = []
@@ -48,6 +46,6 @@ def url(request):
 		for loc,i in enumerate(temp):
 			if(i[0] == "/"):
 				temp[loc] =   urlval + temp[loc]
-		return JsonResponse({"images" : '  '.join(temp)})	
+		return JsonResponse({'content' : str("\n".join(out)) + '  '.join(temp)  })	
 	 
 	
